@@ -23,8 +23,9 @@
 
 Name:           gearmand
 Version:        0.21
-Release:        1%{?dist}.2
+Release:        1%{?dist}.vortex
 Summary:        A distributed job system
+Vendor:		Vortex RPM
 
 Group:          System Environment/Daemons
 License:        BSD
@@ -177,7 +178,7 @@ fi
 %{_libdir}/libgearman*.so.*
 
 %changelog
-* Fri Aug 24 2012 Ilya A. Otyutskiy <sharp@thesharp.ru> - 0.21-1
+* Fri Aug 24 2012 Ilya A. Otyutskiy <sharp@thesharp.ru> - 0.21-1.vortex
 - Update to 0.21.
 
 * Tue Apr 17 2012 Tom Callaway <spot@fedoraproject.org> - 0.14-3.2
