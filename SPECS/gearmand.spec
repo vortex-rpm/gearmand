@@ -1,28 +1,6 @@
 
-# libmemcached is currently too old in RHEL
-%bcond_with libmemcached
-
-# google-perftools is only available for i386/ppc on el5
-# and i686 on el6.  
-# google-perftools not available in ppc64/sparc64
-%if 0%{?el5}
-%ifarch i386 ppc
-%bcond_without google_perftools 
-%else
-%bcond_with google_perftools
-%endif
-%endif
-
-%if 0%{?el6}
-%ifarch i386 i686
-%bcond_without google_perftools
-%else
-%bcond_with google_perftools
-%endif
-%endif
-
 Name:           gearmand
-Version:        0.21
+Version:        1.1.2
 Release:        1%{?dist}.vortex
 Summary:        A distributed job system
 Vendor:		Vortex RPM
@@ -30,7 +8,7 @@ Vendor:		Vortex RPM
 Group:          System Environment/Daemons
 License:        BSD
 URL:            http://www.gearman.org
-Source0:        http://launchpad.net/gearmand/trunk/%{version}/+download/gearmand-%{version}.tar.gz
+Source0:	https://launchpad.net/gearmand/1.2/%{version}/+download/gearmand-%{version}.tar.gz
 Source1:        gearmand.init
 Source2:        gearmand.sysconfig
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -41,14 +19,6 @@ BuildRequires:  libevent-devel, boost-devel
 BuildRequires:  e2fsprogs-devel 
 %else
 BuildRequires:  libuuid-devel
-%endif
-
-%if %{with libmemcached}
-BuildRequires: libmemcached-devel
-%endif
-
-%if %{with google_perftools}
-BuildRequires:  gperftools-devel
 %endif
 
 Requires(pre):   shadow-utils
@@ -88,34 +58,19 @@ Development libraries for %{name}
 %setup -q
 
 %build
-# optional configure options
-%if %{with google_perftools}
-    %global configure_tcmalloc --enable-tcmalloc
-%else
-    %global configure_tcmalloc --disable-tcmalloc
-%endif
-
-%if %{with libmemcached}
-    %global configure_libmemcached --enable-libmemcached
-%else
-    %global configure_libmemcached --disable-libmemcached
-%endif
-
 %configure  \
     --disable-static \
-    %{configure_tcmalloc} \
-    %{configure_libmemcached} \
-    --disable-rpath
+    --disable-rpath \
+    --without-mysql
 
-sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
-sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
+#sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
+#sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 make %{?_smp_mflags}
 
 
 %install
 rm -rf %{buildroot}
 make install DESTDIR=%{buildroot}
-rm -v %{buildroot}%{_libdir}/libgearman*.la
 install -p -D -m 0755 %{SOURCE1} %{buildroot}%{_initrddir}/gearmand
 install -p -D -m 0644 %{SOURCE2} %{buildroot}%{_sysconfdir}/sysconfig/gearmand
 mkdir -p %{buildroot}/var/run/gearmand
@@ -149,35 +104,34 @@ fi
 
 %files
 %defattr(-,root,root,-)
-%doc AUTHORS ChangeLog COPYING README
+%doc ChangeLog README
 %dir %attr(755,gearmand,gearmand) /var/run/gearmand
 %config(noreplace) %{_sysconfdir}/sysconfig/gearmand
 %{_sbindir}/gearmand
 %{_bindir}/gearman
 %{_bindir}/gearadmin
 %{_initrddir}/gearmand
-%{_mandir}/man1/gearman.1.gz
-%{_mandir}/man1/gearadmin.1.gz
-%{_mandir}/man3/libgearman.3.gz
-%{_mandir}/man8/gearmand.8.gz
 
 
 %files -n libgearman-devel
 %defattr(-,root,root,-)
-%doc AUTHORS ChangeLog COPYING README
+%doc ChangeLog README
 %dir %{_includedir}/libgearman
-%{_includedir}/libgearman/*.h
+%{_includedir}/libgearman*
 %{_libdir}/pkgconfig/gearmand.pc
 %{_libdir}/libgearman*.so
-%{_mandir}/man3/gearman*.3.gz
+%{_libdir}/libgearman*.la
 
 %files -n libgearman
 %defattr(-,root,root,-)
-%doc COPYING
+%doc ChangeLog README
 %{_libdir}/libgearman.so.*
 %{_libdir}/libgearman*.so.*
 
 %changelog
+* Fri Oct 26 2012 Ilya A. Otyutskiy <sharp@thesharp.ru> - 1.1.2-1.vortex
+- Update to 1.1.2.
+
 * Fri Aug 24 2012 Ilya A. Otyutskiy <sharp@thesharp.ru> - 0.21-1.vortex
 - Update to 0.21.
 
