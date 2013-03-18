@@ -13,7 +13,7 @@ Source1:        gearmand.init
 Source2:        gearmand.sysconfig
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  libevent-devel, boost-devel, libmemcached-devel
+BuildRequires:  libevent-devel, boost-devel, libmemcached-devel, memcached
 
 %if 0%{?el5}
 BuildRequires:  e2fsprogs-devel 
@@ -62,7 +62,7 @@ Development libraries for %{name}
     --disable-static \
     --disable-rpath \
     --without-mysql \
-    --with-libmemcached
+    --with-memcached=/usr/bin/memcached
 
 #sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 #sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
@@ -75,6 +75,7 @@ make install DESTDIR=%{buildroot}
 install -p -D -m 0755 %{SOURCE1} %{buildroot}%{_initrddir}/gearmand
 install -p -D -m 0644 %{SOURCE2} %{buildroot}%{_sysconfdir}/sysconfig/gearmand
 mkdir -p %{buildroot}/var/run/gearmand
+mkdir -p %{buildroot}%{_localstatedir}/log/gearmand
 
 
 %clean
