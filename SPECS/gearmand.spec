@@ -13,7 +13,7 @@ Source1:        gearmand.init
 Source2:        gearmand.sysconfig
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  libevent-devel, boost-devel, libmemcached-devel, memcached
+BuildRequires:  libevent-devel, boost-devel, libmemcached108-devel
 
 %if 0%{?el5}
 BuildRequires:  e2fsprogs-devel 
@@ -61,8 +61,7 @@ Development libraries for %{name}
 %configure  \
     --disable-static \
     --disable-rpath \
-    --without-mysql \
-    --with-memcached=/usr/bin/memcached
+    --without-mysql
 
 #sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 #sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
