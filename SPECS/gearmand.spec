@@ -61,7 +61,7 @@ Development libraries for %{name}
 %configure  \
     --disable-static \
     --disable-rpath \
-    --without-mysql
+    --without-mysql \
     --with-libmemcached
 
 #sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
