@@ -1,7 +1,7 @@
 
 Name:           gearmand
 Version:        1.1.2
-Release:        1%{?dist}.vortex
+Release:        2%{?dist}.vortex
 Summary:        A distributed job system
 Vendor:		Vortex RPM
 
@@ -13,7 +13,7 @@ Source1:        gearmand.init
 Source2:        gearmand.sysconfig
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  libevent-devel, boost-devel
+BuildRequires:  libevent-devel, boost-devel, libmemcached-devel
 
 %if 0%{?el5}
 BuildRequires:  e2fsprogs-devel 
@@ -62,6 +62,7 @@ Development libraries for %{name}
     --disable-static \
     --disable-rpath \
     --without-mysql
+    --with-libmemcached
 
 #sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 #sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
@@ -106,6 +107,7 @@ fi
 %defattr(-,root,root,-)
 %doc ChangeLog README
 %dir %attr(755,gearmand,gearmand) /var/run/gearmand
+%dir %attr(755,gearmand,gearmand) %{_localstatedir}/log/gearmand
 %config(noreplace) %{_sysconfdir}/sysconfig/gearmand
 %{_sbindir}/gearmand
 %{_bindir}/gearman
@@ -129,6 +131,10 @@ fi
 %{_libdir}/libgearman*.so.*
 
 %changelog
+* Mon Mar 18 2013 Ilya Otyutskiy <ilya.otyutskiy@icloud.com> - 1.1.2-2.vortex
+- Create logdir.
+- Rebuild with libmemcached support.
+
 * Fri Oct 26 2012 Ilya A. Otyutskiy <sharp@thesharp.ru> - 1.1.2-1.vortex
 - Update to 1.1.2.
 
