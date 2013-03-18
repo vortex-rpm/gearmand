@@ -13,7 +13,7 @@ Source1:        gearmand.init
 Source2:        gearmand.sysconfig
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  libevent-devel, boost-devel, libmemcached108-devel
+BuildRequires:  libevent-devel, boost-devel, libmemcached108-devel, memcached
 
 %if 0%{?el5}
 BuildRequires:  e2fsprogs-devel 
