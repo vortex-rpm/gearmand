@@ -108,6 +108,9 @@ fi
 %doc ChangeLog README
 %dir %attr(755,gearmand,gearmand) /var/run/gearmand
 %dir %attr(755,gearmand,gearmand) %{_localstatedir}/log/gearmand
+%{_mandir}/man1/*
+%{_mandir}/man3/*
+%{_mandir}/man8/*
 %config(noreplace) %{_sysconfdir}/sysconfig/gearmand
 %{_sbindir}/gearmand
 %{_bindir}/gearman
