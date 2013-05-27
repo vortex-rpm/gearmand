@@ -1,7 +1,7 @@
 
 Name:           gearmand
-Version:        1.1.2
-Release:        2%{?dist}.vortex
+Version:        1.1.7
+Release:        1%{?dist}.vortex
 Summary:        A distributed job system
 Vendor:		Vortex RPM
 
@@ -131,6 +131,9 @@ fi
 %{_libdir}/libgearman*.so.*
 
 %changelog
+* Mon May 27 2013 Ilya Otyutskiy <ilya.otyutskiy@icloud.com> - 1.1.7-1.vortex
+- Update to 1.1.7.
+
 * Mon Mar 18 2013 Ilya Otyutskiy <ilya.otyutskiy@icloud.com> - 1.1.2-2.vortex
 - Create logdir.
 - Rebuild with libmemcached support.
